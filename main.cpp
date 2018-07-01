@@ -2,22 +2,19 @@
 
 int 	main() {
 
-	int *	mass = new int[10];
-	int *	mass1 = new int[10];
+	double *	mass = new double[10];
+	double *	mass1 = new double[10];
 	std::string name = "functioan";
-	initscr();
-	cbreak();
-	noecho();
 
-	mass[0] = 1;
-	mass[1] = 2;
-	mass[2] = 3;
-	mass[3] = 4;
-	mass[4] = 5;
-	mass[5] = 20;
-	mass[6] = 7;
-	mass[7] = 84;
-	mass[8] = 9;
+	mass[0] = 72.95;
+	mass[1] = 22.015;
+	mass[2] = 3.4747;
+	mass[3] = 42.3848;
+	mass[4] = 5.47478;
+	mass[5] = 20.386535;
+	mass[6] = 7.12423637;
+	mass[7] = 84.4647;
+	mass[8] = 98.497479;
 	mass[9] = 12;
 
 	mass1[0] = 1;
@@ -31,17 +28,18 @@ int 	main() {
 	mass1[8] = 4;
 	mass1[9] = 10;
 
-	Graph * graph = new Graph[4];
-	graph[0].setParams(mass, name, 0);
+	Graph * graph = new Graph[2];
+	Graph * graph1 = new Graph[2];
+	graph[0].setParams(mass1, name, 0);
 	graph[1].setParams(mass1, name, 1);
-	graph[2].setParams(mass1, name, 2);
-	graph[3].setParams(mass, name, 3);
-	graph[0].makeGraph();
-	graph[1].makeGraph();
-	graph[2].makeGraph();
-	graph[3].makeGraph();
 
+	graph1[0].setParams(mass, name, 0);
+	graph1[1].setParams(mass, name, 1);
 
-	getch();
-	endwin();
+	while (1) {
+		graph1[0].setScreen(graph1);
+		graph[0].setScreen(graph);
+		graph[0].setScreen(graph);
+	}
+
 }

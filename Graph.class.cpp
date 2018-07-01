@@ -48,7 +48,7 @@ std::string			Graph::getName() const{
 	return(_name);
 }
 
-int *				Graph::getMass() const{
+double *			Graph::getMass() const{
 
 	return(_mass);
 }
@@ -80,59 +80,101 @@ void				Graph::setName(std::string name) {
 	_name = name;
 }
 
-void				Graph::setMass(int * mass) {
+void				Graph::setMass(double * mass) {
 
 	_mass = mass;
 }
 
-void				Graph::setParams(int * mass, std::string name, int num) {
+void				Graph::setParams(double * mass, std::string name, int num) {
 
 	_mass = mass;
 	_name = name;
 	_num = num;
 }
 
+//--------------------------------Screen-----------------------------------
+
+void	Graph::setScreen(Graph * graph) {
+
+	initscr();
+	cbreak();
+	noecho();
+
+	int hei, width, start_y = 0, start_x = 0;
+
+	hei = getHeight() * 2 + 1;
+	width = getWidth() * 2 + 1;
+
+	WINDOW * win = newwin(hei, width, start_y, start_x);
+	keypad(win, true);
+	refresh();
+
+	wborder(win, 32, 32, 32, 32, 32, 32, 32, 32);
+	wrefresh(win);
+
+	graph[0].makeGraph();
+	graph[1].makeGraph();
+	// graph[2].makeGraph();
+	// graph[3].makeGraph();
+	flushinp();
+	delay_output(300);
+	nodelay(win, true);
+	int c = wgetch(win);
+	if (c == 27) {
+
+		std::cout << "LOL";
+		exit(1);
+	}
+	wrefresh(win);
+	clear();
+	endwin();
+}
+
 //-------------------------------MakeGraph---------------------------------
 
 void	Graph::print_graph(WINDOW * graph) {
 
-	int 	max = find_max(getMass());
-	int 	min = find_min(getMass());
-	int 	move = (max - min + 1) / 10;
+	double 	max = find_max(getMass());
+	double 	min = find_min(getMass());
+	double 	move = (max - min + 1) / 10;
 	int 	iter = 10;
 
+	start_color();
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 
-
+	wattron(graph, COLOR_PAIR(1));
 	for (int coun = 0; coun < 10; coun++) {
 
 		iter = 10;
-		for (double mv = min; static_cast<int>(mv) <= getMass()[coun]; mv += move) {
+		for (double mv = min; mv <= getMass()[coun]; mv += move) {
 
-			mvwprintw(graph, iter, 3 * coun + 1, ".");
+			mvwprintw(graph, iter, 3 * coun + 1, "|");
 			iter--;
 			if (iter <= 0)
 				break;
 		}
 	}
+	wattroff(graph, COLOR_PAIR(1));
 }
 
 void	Graph::make_graph(WINDOW * win) {
 
-	int 	max = find_max(getMass());
-	int 	min = find_min(getMass());
-	mvwprintw(win, 3, 1, "%i", max);
-	mvwprintw(win, 12, 1, "%i", min);
+	double 	max = find_max(getMass());
+	double 	min = find_min(getMass());
+
+	mvwprintw(win, 3, 1, "%f", max);
+	mvwprintw(win, 12, 1, "%f", min);
 
 	for (int coun = 0; coun < getMassSize(); coun++) {
 
-		mvwprintw(win, 13, coun + 4 + 2 * coun," %i", coun);
+		mvwprintw(win, 13, coun + 5 + 2 * coun," %i", coun);
 	}
 	wrefresh(win);
 
 	int hei = 11;
 	int width = 30;
 
-	int start_x = getNum() % 3 * getWidth() + 4;
+	int start_x = getNum() % 3 * getWidth() + 5;
 	int start_y = getNum() / 3 * getHeight() + 2;
 	WINDOW *graph = newwin(hei, width, start_y, start_x);
 	refresh();
@@ -165,11 +207,12 @@ void				Graph::makeGraph() {
 	refresh();
 }
 
+
 //--------------------------------Min&Max----------------------------------
 
-int 	find_min(int * mass) {
+double 	find_min(double * mass) {
 
-	int min = mass[0];
+	double min = mass[0];
 
 	for (int coun = 1; coun < 10; coun++) {
 
@@ -179,9 +222,9 @@ int 	find_min(int * mass) {
 	return (min);
 }
 
-int 	find_max(int * mass) {
+double 	find_max(double * mass) {
 
-	int max = mass[0];
+	double max = mass[0];
 
 	for (int coun = 1; coun < 10; coun++) {
 

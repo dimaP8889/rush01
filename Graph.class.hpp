@@ -25,7 +25,7 @@ class Graph
 	const int	_height;
 	const int	_mass_size;
 
-	int	*		_mass;
+	double	*	_mass;
 	std::string	_name;
 	int			_num;
 public:
@@ -36,15 +36,16 @@ public:
 Graph &		operator=(Graph & copy);
 
 std::string	getName() const;
-int *		getMass() const;
+double *		getMass() const;
 int			getHeight() const;
 int			getWidth() const;
 int			getNum() const;
 int			getMassSize() const;
 
 void		setName(std::string name);
-void		setParams(int * int_ar, std::string name, int num);
-void		setMass(int * mass);
+void		setParams(double * mass, std::string name, int num);
+void		setMass(double * mass);
+void		setScreen(Graph * graph);
 
 void		print_graph(WINDOW * graph);
 void		make_graph(WINDOW * win);
@@ -55,7 +56,7 @@ private:
 
 };
 
-int 	find_min(int * mass);
-int 	find_max(int * mass);
+double 		find_min(double * mass);
+double 		find_max(double * mass);
 
 #endif
